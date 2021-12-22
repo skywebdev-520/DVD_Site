@@ -3,7 +3,9 @@ function Header() {
   return (
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand" href="#"></a>
+        <a class="navbar-brand" href="#">
+          <img src="assets/images/header-logo.png" alt="" />
+        </a>
         <button
           class="navbar-toggler"
           type="button"
@@ -18,7 +20,7 @@ function Header() {
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <NavLink to="/">
+              <NavLink class="nav-link" to="/">
                 Home
                 <span class="sr-only">(current)</span>
               </NavLink>

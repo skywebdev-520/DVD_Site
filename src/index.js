@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Router from "./Componets/Router";
+import Router from "./Components/Router";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(

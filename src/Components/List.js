@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { v1 as uuidv1 } from "uuid";
 import Data from "../Data.js";
 
 class List extends React.Component {
@@ -11,7 +12,6 @@ class List extends React.Component {
 
   componentDidMount() {
     var url = new URL(window.location.href);
-
     this.setState({
       data: Data.items,
       category: [...new Set(Data.items.map(({ category }) => category))],
@@ -41,7 +41,42 @@ class List extends React.Component {
     });
   }
 
-  deleteData(id) {}
+  deleteData(id) {
+    let newData = JSON.parse(localStorage.getItem("data"));
+    newData = newData.items.filter(function (obj) {
+      return obj.id !== id;
+    });
+    localStorage.setItem(
+      "data",
+      JSON.stringify({
+        items: newData,
+      })
+    );
+    this.setState({
+      data: newData,
+      category: [...new Set(newData.map(({ category }) => category))],
+    });
+  }
+
+  addItems(e) {
+    e.preventDefault();
+    let formData = new FormData(e.target);
+    let newData = JSON.parse(localStorage.getItem("data"));
+    let addData = {
+      id: uuidv1(),
+      name: formData.get("name"),
+      category: formData.get("category"),
+      image: formData.get("image"),
+      featured: formData.get("featured") === "on" ? true : false,
+    };
+    newData.items.push(addData);
+    localStorage.setItem("data", JSON.stringify(newData));
+    this.setState({
+      data: newData.items,
+      category: [...new Set(newData.items.map(({ category }) => category))],
+    });
+    e.target.reset();
+  }
   render() {
     const { data, category, isAdmin } = this.state;
     return (
@@ -83,6 +118,17 @@ class List extends React.Component {
                   >
                     Category
                   </button>
+                  {isAdmin ? (
+                    <button
+                      className="btn btn-info"
+                      data-toggle="modal"
+                      data-target="#myModal"
+                    >
+                      Add
+                    </button>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
             </div>
@@ -92,10 +138,10 @@ class List extends React.Component {
         <div className="featured container no-gutter">
           <div className="row posts">
             {data.map((item, index) => (
-              <div id={index + 1} className="item new col-md-4">
+              <div key={index + 1} className="item new col-md-4">
                 <div className="featured-item">
                   <NavLink to={"/product/" + item.id}>
-                    <img src={item.image} alt="" />
+                    <img src={item.image} alt={"Product " + index + 1} />
                   </NavLink>
                   <h4>{item.name}</h4>
                   <h6>{item.category}</h6>
@@ -114,6 +160,84 @@ class List extends React.Component {
             ))}
           </div>
         </div>
+
+        {isAdmin ? (
+          <div className="modal fade" id="myModal" role="dialog">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <form
+                  className="addForm"
+                  onSubmit={(event) => {
+                    this.addItems(event);
+                  }}
+                  encType="multipart/form-data"
+                >
+                  <div className="modal-body">
+                    <div className="form-group">
+                      <label htmlFor="exampleInputName">Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="exampleInputName"
+                        placeholder="Name"
+                        name="name"
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="exampleInputCategory">Category</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="exampleInputCategory"
+                        placeholder="Category"
+                        name="category"
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="exampleInputImage">Image URL</label>
+                      <textarea
+                        className="form-control"
+                        id="exampleInputImage"
+                        placeholder="Url"
+                        name="image"
+                        required
+                      ></textarea>
+                    </div>
+                    <div className="form-group form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id="Featured"
+                        name="featured"
+                      />
+                      <label className="form-check-label" htmlFor="Featured">
+                        Featured
+                      </label>
+                    </div>
+                  </div>
+                  <div className="modal-footer">
+                    <input
+                      type="submit"
+                      className="btn btn-primary"
+                      name="Save"
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-default"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
       </>
     );
   }

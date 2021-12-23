@@ -4,6 +4,7 @@ var Data = {
       id: 1,
       name: "Manifest",
       category: "drama",
+      featured: true,
       image:
         "https://img.nbc.com/sites/nbcunbc/files/images/2021/2/18/Manifest-S3-KeyArt-Logo-Vertical-852x1136.jpg",
     },
@@ -26,6 +27,7 @@ var Data = {
       id: 4,
       name: "Good Girls",
       category: "drama",
+      featured: true,
       image:
         "https://img.nbc.com/sites/nbcunbc/files/images/2021/2/11/GoodGirls_S4-KeyArt-Logo-Vertical-852x1136.jpg",
     },
@@ -41,6 +43,7 @@ var Data = {
       id: 6,
       name: "Below Deck",
       category: "comedy",
+      featured: true,
       image:
         "https://img.nbc.com/sites/nbcunbc/files/images/2021/6/23/BDM-S6-KeyArt-Logo-Vertical-852x1136.jpg",
     },

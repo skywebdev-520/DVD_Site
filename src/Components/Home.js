@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import MyOwlCarousel from "./MyOwlCarousel";
 import Data from "../Data.js";
 
 class Home extends React.Component {
@@ -22,18 +23,8 @@ class Home extends React.Component {
                 <h1>Featured Items</h1>
               </div>
             </div>
-
-            {this.state.data.map((item, index) => (
-              <div className="col-md-3">
-                <NavLink to={"/product/" + item.id}>
-                  <div className="featured-item">
-                    <img src={item.image} alt="Item" />
-                    <h4>{item.name}</h4>
-                  </div>
-                </NavLink>
-              </div>
-            ))}
           </div>
+          <MyOwlCarousel data={this.state.data} />
         </div>
       </div>
     );

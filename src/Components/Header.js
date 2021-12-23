@@ -1,31 +1,33 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { NavLink } from "react-router-dom";
 function Header() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
-      <div className="container">
+    <nav className="navbar navbar-expand-lg  navbar-dark bg-primary">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="#">
+          Logo
+        </a>
         <button
           className="navbar-toggler"
           type="button"
           data-toggle="collapse"
-          data-target="#navbarResponsive"
-          aria-controls="navbarResponsive"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarResponsive">
-          <ul className="navbar-nav ml-auto">
-            <li className="nav-item active">
-              <NavLink className="nav-link" to="/">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <NavLink className="nav-link active" to="/">
                 Home
-                <span className="sr-only">(current)</span>
               </NavLink>
             </li>
-            <li className="nav-item active">
-              <NavLink className="nav-link" to="/list">
+            <li className="nav-item">
+              <NavLink className="nav-link active" to="/list">
                 List
-                <span className="sr-only">(current)</span>
               </NavLink>
             </li>
           </ul>

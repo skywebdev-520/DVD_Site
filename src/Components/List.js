@@ -1,3 +1,5 @@
+/* eslint-disable no-script-url */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { v1 as uuidv1 } from "uuid";
@@ -41,23 +43,6 @@ class List extends React.Component {
     });
   }
 
-  deleteData(id) {
-    let newData = JSON.parse(localStorage.getItem("data"));
-    newData = newData.items.filter(function (obj) {
-      return obj.id !== id;
-    });
-    localStorage.setItem(
-      "data",
-      JSON.stringify({
-        items: newData,
-      })
-    );
-    this.setState({
-      data: newData,
-      category: [...new Set(newData.map(({ category }) => category))],
-    });
-  }
-
   addItems(e) {
     e.preventDefault();
     let formData = new FormData(e.target);
@@ -92,32 +77,58 @@ class List extends React.Component {
               </div>
               <div className="col-md-8 col-sm-12">
                 <div id="filters" className="button-group">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => this.filterData("*")}
-                  >
-                    All Products
-                  </button>
-                  {category.map((cat) => (
+                  <span>
+                    <button className="btn btn-primary" disabled>
+                      Sort By{" "}
+                    </button>
                     <button
                       className="btn btn-primary"
-                      onClick={() => this.filterData(cat)}
+                      onClick={() => this.sortData("name")}
                     >
-                      {cat}
+                      Name
                     </button>
-                  ))}
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => this.sortData("name")}
-                  >
-                    Name
-                  </button>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => this.sortData("category")}
-                  >
-                    Category
-                  </button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => this.sortData("category")}
+                    >
+                      Category
+                    </button>
+                  </span>
+
+                  <span className="dropdown">
+                    <button
+                      className="btn btn-secondary dropdown-toggle"
+                      type="button"
+                      id="dropdownMenuButton"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      Filter By
+                    </button>
+                    <div
+                      className="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton"
+                    >
+                      <a
+                        className="dropdown-item"
+                        href="javascript:void(0)"
+                        onClick={() => this.filterData("*")}
+                      >
+                        All
+                      </a>
+
+                      {category.map((cat) => (
+                        <a
+                          className="dropdown-item"
+                          href="javascript:void(0)"
+                          onClick={() => this.filterData(cat)}
+                        >
+                          {cat}
+                        </a>
+                      ))}
+                    </div>
+                  </span>
                   {isAdmin ? (
                     <button
                       className="btn btn-info"
@@ -145,16 +156,6 @@ class List extends React.Component {
                   </NavLink>
                   <h4>{item.name}</h4>
                   <h6>{item.category}</h6>
-                  {isAdmin ? (
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => this.deleteData(item.id)}
-                    >
-                      Delete
-                    </button>
-                  ) : (
-                    ""
-                  )}
                 </div>
               </div>
             ))}
@@ -172,6 +173,9 @@ class List extends React.Component {
                   }}
                   encType="multipart/form-data"
                 >
+                  <div class="modal-header">
+                    <h4 class="modal-title">Add New DVD</h4>
+                  </div>
                   <div className="modal-body">
                     <div className="form-group">
                       <label htmlFor="exampleInputName">Name</label>

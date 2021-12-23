@@ -60,6 +60,7 @@ class List extends React.Component {
       data: newData.items,
       category: [...new Set(newData.items.map(({ category }) => category))],
     });
+    document.getElementById("closeButton").click();
     e.target.reset();
   }
   render() {
@@ -77,22 +78,36 @@ class List extends React.Component {
               </div>
               <div className="col-md-8 col-sm-12">
                 <div id="filters" className="button-group">
-                  <span>
-                    <button className="btn btn-primary" disabled>
-                      Sort By{" "}
-                    </button>
+                  <span className="dropdown" style={{ marginRight: "10%" }}>
                     <button
-                      className="btn btn-primary"
-                      onClick={() => this.sortData("name")}
+                      className="btn btn-secondary dropdown-toggle"
+                      type="button"
+                      id="dropdownMenuButton1"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
                     >
-                      Name
+                      Sort By
                     </button>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => this.sortData("category")}
+                    <div
+                      className="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton1"
                     >
-                      Category
-                    </button>
+                      <a
+                        className="dropdown-item"
+                        href="javascript:void(0)"
+                        onClick={() => this.sortData("name")}
+                      >
+                        Name
+                      </a>
+                      <a
+                        className="dropdown-item"
+                        href="javascript:void(0)"
+                        onClick={() => this.sortData("category")}
+                      >
+                        Category
+                      </a>
+                    </div>
                   </span>
 
                   <span className="dropdown">
@@ -134,6 +149,7 @@ class List extends React.Component {
                       className="btn btn-info"
                       data-toggle="modal"
                       data-target="#myModal"
+                      style={{ marginLeft: "10%" }}
                     >
                       Add
                     </button>
@@ -229,6 +245,7 @@ class List extends React.Component {
                     />
                     <button
                       type="button"
+                      id="closeButton"
                       className="btn btn-default"
                       data-dismiss="modal"
                     >

@@ -1,12 +1,12 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { NavLink } from "react-router-dom";
+
 function Header() {
   return (
     <nav className="navbar navbar-expand-lg  navbar-dark bg-primary">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-          Logo
-        </a>
+        <NavLink to="/">
+          <img src="/assets/images/logo.png" alt="logo" />
+        </NavLink>
         <button
           className="navbar-toggler"
           type="button"

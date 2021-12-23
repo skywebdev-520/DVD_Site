@@ -1,116 +1,122 @@
-function List() {
-  return (
-    <>
-      <div class="featured-page">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-4 col-sm-12">
-              <div class="section-heading">
-                <div class="line-dec"></div>
-                <h1>All Items</h1>
-              </div>
-            </div>
-            <div class="col-md-8 col-sm-12">
-              <div id="filters" class="button-group">
-                <button class="btn btn-primary" data-filter="*">
-                  By Name
-                </button>
-                <button class="btn btn-primary" data-filter=".new">
-                  By Category
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+import React from "react";
+import { NavLink } from "react-router-dom";
+import Data from "../Data.js";
 
-      <div class="featured container no-gutter">
-        <div class="row posts">
-          <div id="1" class="item new col-md-4">
-            <a href="single-product.html">
-              <div class="featured-item">
-                <img src="/assets/images/product-01.jpg" alt="" />
-                <h4>Proin vel ligula</h4>
-                <h6>$15.00</h6>
+class List extends React.Component {
+  state = {
+    data: [],
+    category: [],
+    isAdmin: false,
+  };
+
+  componentDidMount() {
+    var url = new URL(window.location.href);
+
+    this.setState({
+      data: Data.items,
+      category: [...new Set(Data.items.map(({ category }) => category))],
+      isAdmin: url.searchParams.get("admin") ? true : false,
+    });
+  }
+
+  filterData(category) {
+    let newData = JSON.parse(localStorage.getItem("data"));
+    if (category === "*") {
+      this.setState({
+        data: newData.items,
+      });
+    } else {
+      this.setState({
+        data: newData.items.filter((product) => product.category === category),
+      });
+    }
+  }
+
+  sortData(sortType) {
+    let newData = JSON.parse(localStorage.getItem("data"));
+    this.setState({
+      data: newData.items.sort(function (a, b) {
+        return a[sortType].localeCompare(b[sortType]);
+      }),
+    });
+  }
+
+  deleteData(id) {}
+  render() {
+    const { data, category, isAdmin } = this.state;
+    return (
+      <>
+        <div className="featured-page">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-4 col-sm-12">
+                <div className="section-heading">
+                  <div className="line-dec"></div>
+                  <h1>Items</h1>
+                </div>
               </div>
-            </a>
-          </div>
-          <div id="2" class="item high col-md-4">
-            <a href="single-product.html">
-              <div class="featured-item">
-                <img src="/assets/images/product-02.jpg" alt="" />
-                <h4>Erat odio rhoncus</h4>
-                <h6>$25.00</h6>
+              <div className="col-md-8 col-sm-12">
+                <div id="filters" className="button-group">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => this.filterData("*")}
+                  >
+                    All Products
+                  </button>
+                  {category.map((cat) => (
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => this.filterData(cat)}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => this.sortData("name")}
+                  >
+                    Name
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => this.sortData("category")}
+                  >
+                    Category
+                  </button>
+                </div>
               </div>
-            </a>
-          </div>
-          <div id="3" class="item low col-md-4">
-            <a href="single-product.html">
-              <div class="featured-item">
-                <img src="/assets/images/product-03.jpg" alt="" />
-                <h4>Integer vel turpis</h4>
-                <h6>$35.00</h6>
-              </div>
-            </a>
-          </div>
-          <div id="4" class="item low col-md-4">
-            <a href="single-product.html">
-              <div class="featured-item">
-                <img src="/assets/images/product-04.jpg" alt="" />
-                <h4>Sed purus quam</h4>
-                <h6>$45.00</h6>
-              </div>
-            </a>
-          </div>
-          <div id="5" class="item new high col-md-4">
-            <a href="single-product.html">
-              <div class="featured-item">
-                <img src="/assets/images/product-05.jpg" alt="" />
-                <h4>Morbi aliquet</h4>
-                <h6>$55.00</h6>
-              </div>
-            </a>
-          </div>
-          <div id="6" class="item new col-md-4">
-            <a href="single-product.html">
-              <div class="featured-item">
-                <img src="/assets/images/product-06.jpg" alt="" />
-                <h4>Urna ac diam</h4>
-                <h6>$65.00</h6>
-              </div>
-            </a>
-          </div>
-          <div id="7" class="item new high col-md-4">
-            <a href="single-product.html">
-              <div class="featured-item">
-                <img src="/assets/images/product-03.jpg" alt="" />
-                <h4>Proin eget imperdiet</h4>
-                <h6>$75.00</h6>
-              </div>
-            </a>
-          </div>
-          <div id="8" class="item low new col-md-4">
-            <a href="single-product.html">
-              <div class="featured-item">
-                <img src="/assets/images/product-02.jpg" alt="" />
-                <h4>Nullam risus nisl</h4>
-                <h6>$85.00</h6>
-              </div>
-            </a>
-          </div>
-          <div id="9" class="item new col-md-4">
-            <a href="single-product.html">
-              <div class="featured-item">
-                <img src="/assets/images/product-01.jpg" alt="" />
-                <h4>Cras tempus</h4>
-                <h6>$95.00</h6>
-              </div>
-            </a>
+            </div>
           </div>
         </div>
-      </div>
-    </>
-  );
+
+        <div className="featured container no-gutter">
+          <div className="row posts">
+            {data.map((item, index) => (
+              <div id={index + 1} className="item new col-md-4">
+                <div className="featured-item">
+                  <NavLink to={"/product/" + item.id}>
+                    <img src={item.image} alt="" />
+                  </NavLink>
+                  <h4>{item.name}</h4>
+                  <h6>{item.category}</h6>
+                  {isAdmin ? (
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => this.deleteData(item.id)}
+                    >
+                      Delete
+                    </button>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </>
+    );
+  }
 }
 
 export default List;

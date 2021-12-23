@@ -3,9 +3,6 @@ function Header() {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div className="container">
-        <a className="navbar-brand" href="#">
-          <img src="assets/images/header-logo.png" alt="" />
-        </a>
         <button
           className="navbar-toggler"
           type="button"

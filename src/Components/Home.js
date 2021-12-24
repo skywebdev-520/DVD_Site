@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from "react";
 import Data from "../Data.js";
 import OwlCarousel from "react-owl-carousel";
 import { NavLink } from "react-router-dom";
@@ -28,53 +29,46 @@ const options = {
   },
 };
 
-class Home extends React.Component {
-  state = {
-    data: [],
-  };
-  componentDidMount() {
+export default function Home() {
+  const [data, setData] = useState([]);
+  useEffect(() => {
     const result = Data.items.filter((product) => product.featured);
-    this.setState({ data: result });
-  }
-
-  render() {
-    return (
-      <div className="featured-items">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="section-heading">
-                <div className="line-dec"></div>
-                <h1>Featured Items</h1>
-              </div>
+    setData(result);
+  }, []);
+  return (
+    <div className="featured-items">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <div className="section-heading">
+              <div className="line-dec"></div>
+              <h1>Featured Items</h1>
             </div>
-            <div className="col-md-12">
-              {this.state.data.length > 0 ? (
-                <OwlCarousel className="owl-theme owl-refresh" {...options}>
-                  {this.state.data.map((item, index) => (
-                    <div className="item">
-                      <NavLink to={"/product/" + item.id}>
-                        <div className="featured-item">
-                          <img
-                            src={item.image}
-                            className="img-responsive"
-                            alt="Item"
-                          />
-                          <h4>{item.name}</h4>
-                        </div>
-                      </NavLink>
-                    </div>
-                  ))}
-                </OwlCarousel>
-              ) : (
-                ""
-              )}
-            </div>
+          </div>
+          <div className="col-md-12">
+            {data.length > 0 ? (
+              <OwlCarousel className="owl-theme owl-refresh" {...options}>
+                {data.map((item) => (
+                  <div className="item">
+                    <NavLink to={"/product/" + item.id}>
+                      <div className="featured-item">
+                        <img
+                          src={item.image}
+                          className="img-responsive"
+                          alt="Item"
+                        />
+                        <h4>{item.name}</h4>
+                      </div>
+                    </NavLink>
+                  </div>
+                ))}
+              </OwlCarousel>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default Home;

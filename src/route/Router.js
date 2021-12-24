@@ -1,8 +1,8 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Home from "../components/Home";
-import List from "../components/List";
-import Product from "../components/Product";
-import Header from "../components/Header";
+import Home from "../component/Home";
+import List from "../component/List";
+import Product from "../component/Product";
+import Header from "../component/Header";
 
 function Router() {
   return (

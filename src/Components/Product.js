@@ -6,36 +6,19 @@ class Product extends React.Component {
   state = {
     product: {},
     error: false,
-    isAdmin: false,
   };
 
   componentDidMount() {
     if (typeof this.props.match.params.id !== "undefined") {
       let product = Data.items.find((p) => p.id == this.props.match.params.id);
-      let url = new URL(window.location.href);
-      let isAdmin = url.searchParams.get("admin") ? true : false;
       product
-        ? this.setState({ product, error: false, isAdmin })
-        : this.setState({ error: true, isAdmin });
+        ? this.setState({ product, error: false })
+        : this.setState({ error: true });
     }
   }
 
-  deleteData(id) {
-    let newData = JSON.parse(localStorage.getItem("data"));
-    newData = newData.items.filter(function (obj) {
-      return obj.id !== id;
-    });
-    localStorage.setItem(
-      "data",
-      JSON.stringify({
-        items: newData,
-      })
-    );
-    window.location.href = "/";
-  }
-
   render() {
-    const { product, error, isAdmin } = this.state;
+    const { product, error } = this.state;
     return error ? (
       <Redirect to="/" />
     ) : (
@@ -55,18 +38,6 @@ class Product extends React.Component {
               <div className="right-content">
                 <h4>{product.name}</h4>
                 <h6>{product.category}</h6>
-                <div>
-                  {isAdmin ? (
-                    <button
-                      className="btn btn-danger"
-                      onClick={() => this.deleteData(product.id)}
-                    >
-                      Delete
-                    </button>
-                  ) : (
-                    ""
-                  )}
-                </div>
               </div>
             </div>
           </div>

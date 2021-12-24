@@ -63,6 +63,23 @@ class List extends React.Component {
     document.getElementById("closeButton").click();
     e.target.reset();
   }
+
+  deleteData(id) {
+    let newData = JSON.parse(localStorage.getItem("data"));
+    newData = newData.items.filter(function (obj) {
+      return obj.id !== id;
+    });
+    localStorage.setItem(
+      "data",
+      JSON.stringify({
+        items: newData,
+      })
+    );
+    this.setState({
+      data: newData,
+      category: [...new Set(newData.map(({ category }) => category))],
+    });
+  }
   render() {
     const { data, category, isAdmin } = this.state;
     return (
@@ -166,12 +183,31 @@ class List extends React.Component {
           <div className="row posts">
             {data.map((item, index) => (
               <div key={index + 1} className="item new col-md-4">
-                <div className="featured-item">
-                  <NavLink to={"/product/" + item.id}>
-                    <img src={item.image} alt={"Product " + index + 1} />
-                  </NavLink>
-                  <h4>{item.name}</h4>
-                  <h6>{item.category}</h6>
+                <div className="featured-item row">
+                  <div className="col-md-12">
+                    <NavLink to={"/product/" + item.id}>
+                      <img src={item.image} alt={"Product " + index + 1} />
+                    </NavLink>
+                  </div>
+
+                  <div className="col-md-8">
+                    <h4>{item.name}</h4>
+                    <h6>{item.category}</h6>
+                  </div>
+                  <div className="col-md-4">
+                    {isAdmin ? (
+                      <h4>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => this.deleteData(item.id)}
+                        >
+                          Delete
+                        </button>
+                      </h4>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -189,8 +225,8 @@ class List extends React.Component {
                   }}
                   encType="multipart/form-data"
                 >
-                  <div class="modal-header">
-                    <h4 class="modal-title">Add New DVD</h4>
+                  <div className="modal-header">
+                    <h4 className="modal-title">Add New DVD</h4>
                   </div>
                   <div className="modal-body">
                     <div className="form-group">

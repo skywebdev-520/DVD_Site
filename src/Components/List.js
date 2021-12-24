@@ -15,25 +15,25 @@ export default function List() {
     setIsAdmin(url.searchParams.get("admin") ? true : false);
   }, []);
 
-  function filterData(category) {
+  const filterData = (category) => {
     let newData = JSON.parse(localStorage.getItem("data"));
     if (category === "*") {
       setData(newData.items);
     } else {
       setData(newData.items.filter((product) => product.category === category));
     }
-  }
+  };
 
-  function sortData(sortType) {
+  const sortData = (sortType) => {
     let newData = JSON.parse(localStorage.getItem("data"));
     setData(
       newData.items.sort(function (a, b) {
         return a[sortType].localeCompare(b[sortType]);
       })
     );
-  }
+  };
 
-  function addItems(e) {
+  const addItems = (e) => {
     e.preventDefault();
     let formData = new FormData(e.target);
     let newData = JSON.parse(localStorage.getItem("data"));
@@ -50,9 +50,9 @@ export default function List() {
     setCategory([...new Set(newData.items.map(({ category }) => category))]);
     document.getElementById("closeButton").click();
     e.target.reset();
-  }
+  };
 
-  function deleteData(id) {
+  const deleteData = (id) => {
     let newData = JSON.parse(localStorage.getItem("data"));
     newData = newData.items.filter(function (obj) {
       return obj.id !== id;
@@ -65,7 +65,7 @@ export default function List() {
     );
     setData(newData);
     setCategory([...new Set(newData.map(({ category }) => category))]);
-  }
+  };
 
   return (
     <>
@@ -97,14 +97,12 @@ export default function List() {
                   >
                     <a
                       className="dropdown-item"
-                      href="javascript:void(0)"
                       onClick={(event) => sortData("name")}
                     >
                       Name
                     </a>
                     <a
                       className="dropdown-item"
-                      href="javascript:void(0)"
                       onClick={(event) => sortData("category")}
                     >
                       Category
@@ -129,17 +127,16 @@ export default function List() {
                   >
                     <a
                       className="dropdown-item"
-                      href="javascript:void(0)"
                       onClick={(event) => filterData("*")}
                     >
                       All
                     </a>
 
-                    {category.map((cat) => (
+                    {category.map((cat, index) => (
                       <a
                         className="dropdown-item"
-                        href="javascript:void(0)"
                         onClick={(event) => filterData(cat)}
+                        key={index}
                       >
                         {cat}
                       </a>

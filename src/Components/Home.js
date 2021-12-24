@@ -31,10 +31,12 @@ const options = {
 
 export default function Home() {
   const [data, setData] = useState([]);
+
   useEffect(() => {
     const result = Data.items.filter((product) => product.featured);
     setData(result);
   }, []);
+
   return (
     <div className="featured-items">
       <div className="container">
@@ -48,8 +50,8 @@ export default function Home() {
           <div className="col-md-12">
             {data.length > 0 ? (
               <OwlCarousel className="owl-theme owl-refresh" {...options}>
-                {data.map((item) => (
-                  <div className="item">
+                {data.map((item, index) => (
+                  <div className="item" key={index}>
                     <NavLink to={"/product/" + item.id}>
                       <div className="featured-item">
                         <img
